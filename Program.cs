@@ -1,3 +1,6 @@
+using Mechine_Test_Code.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace Mechine_Test_Code
 {
     public class Program
@@ -6,8 +9,15 @@ namespace Mechine_Test_Code
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var connnectionstring = builder.Configuration.GetConnectionString("DefaultConnection");
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<AppDbContext>(option => option.UseSqlServer(connnectionstring));
+
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession();
 
             var app = builder.Build();
 

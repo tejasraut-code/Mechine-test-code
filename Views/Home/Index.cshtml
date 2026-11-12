@@ -1,8 +1,51 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model List<ServiceViewModel>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="card shadow hero-card">
+        <div class=" d-flex justify-content-around align-items-center">
+            <h2>Home Service MarketPlace</h2>
+            <div class="card-img">
+                <img class="img-fluid mh-100" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO97IV-jIxrTT3KPQIObXnRMntyHflHuewSU9tuR4UlA&s=10" alt="Home Service MarketPlace Image" />
+            </div>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="btn btn-outline-info category-dropdown-btn">
+            Category Options
+        </button>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-12 col-md-3 col-lg-3 mb-2">
+                    <div class="card shadow">
+                        <div class="card-header">
+                            <h3>@item.ServiceName</h3>
+                            <h4>@item.category.CategoryName</h4>
+                        </div>
+                        <div class="card-body">
+                            <p>@item.Description</p>
+                            <p><b>Rs.@item.Price</b>/-</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-info">Book Appointment</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+       
+    }
+    else
+    {
+        <div class="card-body">
+            <h3>No Service Available</h3>
+        </div>
+    }
 </div>
