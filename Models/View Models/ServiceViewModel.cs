@@ -1,4 +1,5 @@
 ﻿using Mechine_Test_Code.Models.Domain_Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Mechine_Test_Code.Models.View_Models
 {
@@ -14,8 +15,11 @@ namespace Mechine_Test_Code.Models.View_Models
         //public int EstimatedDurationMinutes { get; set; }
         //public bool RequiredSiteVisit { get; set; }
 
+        public CategoryViewModel category = new CategoryViewModel();
 
-        public CategoryModel category = new CategoryModel();
+
+
+        
     }
 
 }

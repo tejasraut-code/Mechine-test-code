@@ -1,27 +1,33 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@model List<ServiceViewModel>
+@model ServiceIndexViewModel
 
 <div class="container">
     <div class="card shadow hero-card">
-        <div class=" d-flex justify-content-around align-items-center">
+        <div class=" d-flex justify-content-around align-items-center mb-2">
             <h2>Home Service MarketPlace</h2>
-            <div class="card-img">
-                <img class="img-fluid mh-100" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO97IV-jIxrTT3KPQIObXnRMntyHflHuewSU9tuR4UlA&s=10" alt="Home Service MarketPlace Image" />
+            <div class="card-img" >
+                <img class="img-fluid" style="height: 30vh" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO97IV-jIxrTT3KPQIObXnRMntyHflHuewSU9tuR4UlA&s=10" alt="Home Service MarketPlace Image" />
             </div>
         </div>
     </div>
-    <div class="dropdown">
-        <button class="btn btn-outline-info category-dropdown-btn">
-            Category Options
-        </button>
+    <div class="d-flex justify-content-around">
+        <h3>@ViewBag.Message</h3>
+
+        <form method="get" asp-controller="Home" asp-action="Index">
+            <select class="form-select" asp-for="SelectedCategoryId" asp-items="Model.CategoryOption">
+                <option value="">All Category</option>
+            </select>
+            <button class="btn btn-outline-info" type="submit">Check</button>
+        </form>
+        
     </div>
 
-    @if (Model.Any())
+    @if (Model.serviceViews.Any())
     {
         <div class="row">
-            @foreach (var item in Model)
+            @foreach (var item in Model.serviceViews)
             {
                 <div class="col-12 col-md-3 col-lg-3 mb-2">
                     <div class="card shadow">
