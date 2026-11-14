@@ -2,11 +2,12 @@
 
 namespace Mechine_Test_Code.Models.View_Models
 {
-    public class ServiceIndexViewModel
+    public class ServiceViewIndexModel
     {
         public int? SelectedCategoryId { get; set; }
+        public string CategoryName { get; set; } = string.Empty;
 
         public List<SelectListItem> CategoryOption { get; set; } = new List<SelectListItem>();
-        public List<ServiceViewModel> serviceViews { get; set; } = new List<ServiceViewModel>();
+        public List<ServiceViewModel> Services { get; set; } = new List<ServiceViewModel>();
     }
 }

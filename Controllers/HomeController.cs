@@ -24,28 +24,26 @@ namespace Mechine_Test_Code.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int? SelectedCategoryId)
         {
-            string CategoryName = "All Category-Service";
-            int? CategoryId = SelectedCategoryId;
-            if (CategoryId != null )
+            string CategoryName = "All Category";
+            ServiceViewIndexModel serviceViewIndex = new ServiceViewIndexModel();
+            if(SelectedCategoryId != null)
             {
-                CategoryModel? category = await _context.Category.FindAsync(CategoryId.Value);
+                var category = await _context.Category.FindAsync(SelectedCategoryId);
                 if(category == null)
                 {
                     return NotFound();
                 }
-                CategoryName = category.CategoryName;
+                serviceViewIndex.CategoryName = category.CategoryName;
             }
-            
-            
-            ServiceIndexViewModel serviceIndexView = new ServiceIndexViewModel();
-            serviceIndexView.SelectedCategoryId = CategoryId;
-            serviceIndexView.CategoryOption = await _context.Category.Select(x => new SelectListItem
+
+            serviceViewIndex.SelectedCategoryId = SelectedCategoryId;
+            serviceViewIndex.CategoryOption = await _context.Category.Select(x => new SelectListItem
             {
                 Text = x.CategoryName,
                 Value = x.CategoryId.ToString()
             }).ToListAsync();
 
-            List<ServiceModel>? servicesList = await _context.Services.Include(x => x.Category).Where( x=> CategoryId == null || x.CategoryId == CategoryId).ToListAsync();
+            List<ServiceModel>? servicesList = await _context.Services.Include(x => x.Category).Where( x=> SelectedCategoryId == null || x.CategoryId == SelectedCategoryId).ToListAsync();
             foreach (var item in servicesList)
             {
                 ServiceViewModel serviceView = new ServiceViewModel();
@@ -55,12 +53,10 @@ namespace Mechine_Test_Code.Controllers
                 serviceView.Description = item.Description;
                 serviceView.Price = item.Price;
 
-                //serviceViewList.Add(serviceView);
-                serviceIndexView.serviceViews.Add(serviceView);
+                serviceViewIndex.Services.Add(serviceView);
             }
-            //serviceIndexView.serviceViews = serviceViewList;/
-            ViewBag.Message = CategoryName;
-            return View(serviceIndexView);
+            
+            return View(serviceViewIndex);
         }
 
         public IActionResult Privacy()
