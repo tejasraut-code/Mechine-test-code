@@ -33,7 +33,7 @@ namespace Mechine_Test_Code.Controllers
                 {
                     return NotFound();
                 }
-                serviceViewIndex.CategoryName = category.CategoryName;
+                CategoryName = category.CategoryName;
             }
 
             serviceViewIndex.SelectedCategoryId = SelectedCategoryId;
@@ -43,7 +43,7 @@ namespace Mechine_Test_Code.Controllers
                 Value = x.CategoryId.ToString()
             }).ToListAsync();
 
-            List<ServiceModel>? servicesList = await _context.Services.Include(x => x.Category).Where( x=> SelectedCategoryId == null || x.CategoryId == SelectedCategoryId).ToListAsync();
+            List<ServiceModel> servicesList = await _context.Services.Include(x => x.Category).Where( x=> SelectedCategoryId == null || x.CategoryId == SelectedCategoryId).ToListAsync();
             foreach (var item in servicesList)
             {
                 ServiceViewModel serviceView = new ServiceViewModel();
@@ -55,7 +55,7 @@ namespace Mechine_Test_Code.Controllers
 
                 serviceViewIndex.Services.Add(serviceView);
             }
-            
+            serviceViewIndex.CategoryName = CategoryName;
             return View(serviceViewIndex);
         }
 
