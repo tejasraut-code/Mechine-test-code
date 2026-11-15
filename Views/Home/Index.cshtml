@@ -13,16 +13,24 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-around p-2">
+    <div class="d-flex justify-content-around">
         <h3>@Model.CategoryName</h3>
 
         <form method="get" asp-action="Index" asp-controller="Home" >
 
-            <select class="form-select" asp-items="Model.CategoryOption" asp-for="SelectedCategoryId">
-                <option value="">All Category</option>
-            </select>
+            <div class="d-flex justify-content-evenly my-2">
 
-            <button class="btn btn-outline-info">Filter/Change</button>
+                <label class="form-label" asp-for="SearchServiceName">Search Service:</label>
+                <input class="form-control" asp-for="SearchServiceName" type="text" placeholder="@Model.SearchServiceName" />
+
+                <select class="form-select" asp-items="Model.CategoryOption" asp-for="SelectedCategoryId">
+                    <option value="">All Category</option>
+                </select>
+
+                <button class="btn btn-outline-info">Filter/Change</button>
+
+            </div>
+
         </form>
     </div>
 

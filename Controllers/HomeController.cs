@@ -7,6 +7,7 @@ using Mechine_Test_Code.Models.View_Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Mechine_Test_Code.Controllers
 {
@@ -22,9 +23,10 @@ namespace Mechine_Test_Code.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int? SelectedCategoryId)
+        public async Task<IActionResult> Index(int? SelectedCategoryId, string? SearchServiceName)
         {
             string CategoryName = "All Category";
+            string searchService = SearchServiceName ?? string.Empty;
             ServiceViewIndexModel serviceViewIndex = new ServiceViewIndexModel();
             if(SelectedCategoryId != null)
             {
@@ -35,6 +37,9 @@ namespace Mechine_Test_Code.Controllers
                 }
                 CategoryName = category.CategoryName;
             }
+            Console.WriteLine($"Search: '{searchService}'");
+            Console.WriteLine($"Is Empty: {string.IsNullOrEmpty(searchService)}");
+           
 
             serviceViewIndex.SelectedCategoryId = SelectedCategoryId;
             serviceViewIndex.CategoryOption = await _context.Category.Select(x => new SelectListItem
@@ -43,7 +48,10 @@ namespace Mechine_Test_Code.Controllers
                 Value = x.CategoryId.ToString()
             }).ToListAsync();
 
-            List<ServiceModel> servicesList = await _context.Services.Include(x => x.Category).Where( x=> SelectedCategoryId == null || x.CategoryId == SelectedCategoryId).ToListAsync();
+            List<ServiceModel> servicesList = await _context.Services.Include(x => x.Category).Where( x=> 
+            (SelectedCategoryId == null || x.CategoryId == SelectedCategoryId)
+            && 
+            ( SearchServiceName.IsNullOrEmpty() || x.ServiceName.Contains(searchService))).ToListAsync();
             foreach (var item in servicesList)
             {
                 ServiceViewModel serviceView = new ServiceViewModel();
